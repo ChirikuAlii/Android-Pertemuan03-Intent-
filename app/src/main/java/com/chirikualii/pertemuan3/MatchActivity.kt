@@ -1,24 +1,32 @@
 package com.chirikualii.pertemuan3
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.chirikualii.pertemuan3.databinding.ActivityMatchBinding
 
 class MatchActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMatchBinding
+    private lateinit var binding: ActivityMatchBinding
 
     var scoreA = 0
     var scoreB = 0
 
-    //
+    var teamA = ""
+    var teamB = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMatchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //
+        //get value team from intent
+        teamA = intent.getStringExtra(Constants.TEAM_A).toString()
+        teamB = intent.getStringExtra(Constants.TEAM_B).toString()
+
+        //set value from intent to textview
+        binding.tvTeamA.text = teamA
+        binding.tvTeamB.text = teamB
 
         binding.btnTeamAPlus.setOnClickListener { addScoreA() }
 
@@ -31,7 +39,14 @@ class MatchActivity : AppCompatActivity() {
         binding.btnReset.setOnClickListener { resetScore() }
 
         binding.btnDone.setOnClickListener {
+            val intent = Intent(this, ResultActivity::class.java)
+            intent.putExtra(Constants.TEAM_A, teamA)
+            intent.putExtra(Constants.TEAM_B, teamB)
+            intent.putExtra(Constants.SCORE_A, scoreA)
+            intent.putExtra(Constants.SCORE_B, scoreB)
 
+
+            startActivity(intent)
         }
 
     }
